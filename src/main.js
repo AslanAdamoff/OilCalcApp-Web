@@ -37,8 +37,16 @@ function init() {
     const app = document.getElementById('app');
     app.innerHTML = `
     <div class="page-container" id="pageContainer"></div>
-    <nav class="tab-bar" id="tabBar"></nav>
   `;
+
+    // Tab bar outside #app, directly on body for reliable bottom positioning
+    let tabBar = document.getElementById('tabBar');
+    if (!tabBar) {
+        tabBar = document.createElement('nav');
+        tabBar.className = 'tab-bar';
+        tabBar.id = 'tabBar';
+        document.body.appendChild(tabBar);
+    }
 
     renderTabBar();
     switchTab(currentTab);
