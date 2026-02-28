@@ -27,6 +27,20 @@ function init() {
 
     renderTabBar();
     switchTab(currentTab);
+
+    // Dismiss splash screen after minimum 2 seconds
+    const splashMinTime = 2000;
+    const startTime = performance.timing.navigationStart || Date.now();
+    const elapsed = Date.now() - startTime;
+    const remaining = Math.max(0, splashMinTime - elapsed);
+
+    setTimeout(() => {
+        const splash = document.getElementById('splash');
+        if (splash) {
+            splash.classList.add('fade-out');
+            setTimeout(() => splash.remove(), 700);
+        }
+    }, remaining);
 }
 
 function renderTabBar() {
