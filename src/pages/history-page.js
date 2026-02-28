@@ -102,7 +102,7 @@ function renderItems(container, history) {
 
 function showEntryDetail(entry) {
     if (entry.tripResult) {
-        showTripHistoryResult(entry.tripResult);
+        showTripHistoryResult(entry.tripResult, entry);
     } else if (entry.dualResult) {
         const r = entry.dualResult;
         const isDirect = entry.parameters?.mode === 'massToLiters';
@@ -146,15 +146,19 @@ function showEntryDetail(entry) {
     }
 }
 
-function showTripHistoryResult(tripResult) {
-    let html = '<div class="result-card">';
+function showTripHistoryResult(tripResult, entry) {
+    let html = '';
+
+    // Total Analysis
     const d = tripResult.totalDelta || {};
     const mc = (d.massKg ?? 0) >= 0 ? 'positive' : 'negative';
     const v15c = (d.v15 ?? 0) >= 0 ? 'positive' : 'negative';
+    const vfc = (d.vFact ?? 0) >= 0 ? 'positive' : 'negative';
 
+    html += '<div class="result-card">';
+    html += '<div class="section-title" style="margin-top:0;">Total Analysis</div>';
+    html += '<hr class="result-divider">';
     html += `
-    <div class="section-title" style="margin-top:0;">Total Analysis</div>
-    <hr class="result-divider">
     <div class="delta-row">
       <span class="delta-label">Δ Mass</span>
       <div class="delta-values">
@@ -169,9 +173,86 @@ function showTripHistoryResult(tripResult) {
         <span class="delta-main ${v15c}">${formatVolume(d.v15 ?? 0)} l</span>
         <span class="delta-percent ${v15c}">(${formatPercent(d.v15Percent ?? 0)}%)</span>
       </div>
-    </div>
-  `;
+    </div>`;
+    if (d.vFact != null) {
+        html += `
+    <hr class="result-divider">
+    <div class="delta-row">
+      <span class="delta-label">Δ Volume (Fact)</span>
+      <div class="delta-values">
+        <span class="delta-main ${vfc}">${formatVolume(d.vFact ?? 0)} l</span>
+        <span class="delta-percent ${vfc}">(${formatPercent(d.vFactPercent ?? 0)}%)</span>
+      </div>
+    </div>`;
+    }
     html += '</div>';
+
+    // Product type
+    if (entry?.parameters?.productType) {
+        html += `<div style="text-align:center; font-size:var(--font-xs); color:var(--text-muted); margin: var(--spacing-xs) 0;">
+            Product: ${entry.parameters.productType === 'crudeOil' ? 'Crude Oil' : 'Refined Products'}
+        </div>`;
+    }
+
+    // Measurement Points
+    if (tripResult.points && tripResult.points.length > 0) {
+        html += '<div class="section-title">Measurement Points</div>';
+        tripResult.points.forEach((point, i) => {
+            const label = point.name || `Point ${i + 1}`;
+            // Get input data from saved params if available
+            const inputPoint = entry?.parameters?.points?.[i];
+            html += `<div class="result-card">
+                <div style="font-weight:700; margin-bottom:var(--spacing-xs); color:var(--text-primary);">${label}</div>
+                <div class="result-row"><span class="label">Mass</span><span class="value">${formatMass(point.massKg)} kg</span></div>
+                <div class="result-row"><span class="label">Density (15°C)</span><span class="value">${point.density15?.toFixed(4) ?? '-'} kg/l</span></div>
+                <div class="result-row"><span class="label">Temperature</span><span class="value">${point.temperature?.toFixed(1) ?? '-'}°C</span></div>
+                <hr class="result-divider">
+                <div class="result-row"><span class="label">Volume (15°C)</span><span class="value accent">${formatVolume(point.v15Liters)} l</span></div>
+                <div class="result-row"><span class="label">Volume (@ T°C)</span><span class="value accent">${formatVolume(point.vFactLiters)} l</span></div>
+            </div>`;
+        });
+    } else if (entry?.parameters?.points) {
+        // Fallback: show saved input parameters if result points not available
+        html += '<div class="section-title">Input Data</div>';
+        entry.parameters.points.forEach((p, i) => {
+            html += `<div class="result-card">
+                <div style="font-weight:700; margin-bottom:var(--spacing-xs);">${p.name || 'Point ' + (i + 1)}</div>
+                <div class="result-row"><span class="label">Mass</span><span class="value">${p.mass} kg</span></div>
+                <div class="result-row"><span class="label">Density</span><span class="value">${p.density} kg/l</span></div>
+                <div class="result-row"><span class="label">Temperature</span><span class="value">${p.temperature}°C</span></div>
+            </div>`;
+        });
+    }
+
+    // Segments
+    if (tripResult.segments && tripResult.segments.length > 0) {
+        html += '<div class="section-title">Segment Analysis</div>';
+        tripResult.segments.forEach((seg, i) => {
+            const segDelta = seg.delta || {};
+            const smc = (segDelta.massKg ?? 0) >= 0 ? 'positive' : 'negative';
+            const sv15c = (segDelta.v15 ?? 0) >= 0 ? 'positive' : 'negative';
+            html += `<div class="result-card">
+                <div style="font-weight:600; margin-bottom:var(--spacing-sm);">
+                    ${seg.fromPoint?.name || 'Start'} → ${seg.toPoint?.name || 'End'}
+                </div>
+                <div class="delta-row">
+                    <span class="delta-label">Δ Mass</span>
+                    <div class="delta-values">
+                        <span class="delta-main ${smc}">${formatMass(segDelta.massKg ?? 0)} kg</span>
+                        <span class="delta-percent ${smc}">(${formatPercent(segDelta.massPercent ?? 0)}%)</span>
+                    </div>
+                </div>
+                <hr class="result-divider">
+                <div class="delta-row">
+                    <span class="delta-label">Δ Vol (15°C)</span>
+                    <div class="delta-values">
+                        <span class="delta-main ${sv15c}">${formatVolume(segDelta.v15 ?? 0)} l</span>
+                        <span class="delta-percent ${sv15c}">(${formatPercent(segDelta.v15Percent ?? 0)}%)</span>
+                    </div>
+                </div>
+            </div>`;
+        });
+    }
 
     showResultModal('Trip Loss (History)', html);
 }

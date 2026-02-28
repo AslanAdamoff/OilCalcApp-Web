@@ -252,18 +252,18 @@ function doCalculate() {
         const result = calculate(state.points, state.productType);
 
         // Save history
+        // Save history with full point data
         const params = {
             productType: state.productType,
             pointsCount: String(state.points.length),
+            points: state.points.map(p => ({
+                name: p.name,
+                mass: p.mass,
+                density: p.density,
+                temperature: p.temperature,
+                densityMode: p.densityMode,
+            })),
         };
-        if (state.points.length > 0) {
-            params.startMass = state.points[0].mass;
-            params.startLoc = state.points[0].name;
-        }
-        if (state.points.length > 1) {
-            params.endMass = state.points[state.points.length - 1].mass;
-            params.endLoc = state.points[state.points.length - 1].name;
-        }
         HistoryService.addEntry(createHistoryEntry({ type: CalculationType.TRIP_CALC, tripResult: result, parameters: params }));
 
         showTripResult(result);
