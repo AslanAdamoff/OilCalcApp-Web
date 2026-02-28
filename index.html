@@ -34,10 +34,28 @@
     }
 
     #splash img {
-      width: 260px;
-      max-width: 65vw;
+      width: 160px;
+      max-width: 40vw;
       height: auto;
+      border-radius: 32px;
       animation: splashPulse 2s ease-in-out infinite;
+    }
+
+    #splash .splash-title {
+      margin-top: 24px;
+      font-family: 'Inter', -apple-system, sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+    }
+
+    #splash .splash-sub {
+      margin-top: 6px;
+      font-family: 'Inter', -apple-system, sans-serif;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.4);
+      letter-spacing: 1px;
     }
 
     @keyframes splashPulse {
@@ -59,7 +77,9 @@
 <body>
   <!-- Splash Screen -->
   <div id="splash">
-    <img src="/launch_image.png" alt="OilCalcApp">
+    <img src="/icon-512.png" alt="OilCalcApp">
+    <div class="splash-title">OilCalcApp</div>
+    <div class="splash-sub">PETROLEUM CALCULATOR</div>
   </div>
 
   <div id="app"></div>

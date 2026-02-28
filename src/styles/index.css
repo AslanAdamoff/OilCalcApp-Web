@@ -185,6 +185,7 @@ body {
 
 .page {
   padding: var(--spacing-lg) var(--spacing-md);
+  padding-top: calc(env(safe-area-inset-top, 0px) + var(--spacing-lg));
   padding-bottom: var(--spacing-xl);
   min-height: 100%;
   animation: pageFadeIn 0.3s ease;
