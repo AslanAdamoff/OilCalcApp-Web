@@ -164,7 +164,7 @@ body {
   -webkit-backdrop-filter: blur(20px);
   border-top: 1px solid var(--border);
   padding: var(--spacing-xs) 0;
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-bottom: 6px;
   z-index: 100;
   flex-shrink: 0;
   width: 100%;
