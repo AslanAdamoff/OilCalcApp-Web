@@ -1,5 +1,5 @@
 /**
- * About Page — Port of AboutView.swift + SettingsView.swift
+ * About Page - Port of AboutView.swift + SettingsView.swift
  * Bilingual EN/RU content about the app and standards
  * Includes theme toggle (dark/light)
  */
@@ -131,10 +131,10 @@ function renderEnglish() {
         <h3>Standards and Methodology</h3>
         <p style="margin-bottom: var(--spacing-sm);">The application uses algorithms compliant with international standards for oil and petroleum product calculations:</p>
         <ul>
-          <li><span class="about-standard">ASTM D1250-04 / API MPMS Chapter 11.1</span> — Standard Volume Correction Tables.</li>
-          <li><span class="about-standard">Table 54A / 54B</span> — For volume correction to 15°C (Generalized Crude Oils & Products).</li>
-          <li><span class="about-standard">Table 60A / 60B</span> — For density conversion.</li>
-          <li><span class="about-standard">VCF</span> — Uses thermal expansion coefficients for crude oil, fuels, and lubricating oils.</li>
+          <li><span class="about-standard">ASTM D1250-04 / API MPMS Chapter 11.1</span> - Standard Volume Correction Tables.</li>
+          <li><span class="about-standard">Table 54A / 54B</span> - For volume correction to 15°C (Generalized Crude Oils & Products).</li>
+          <li><span class="about-standard">Table 60A / 60B</span> - For density conversion.</li>
+          <li><span class="about-standard">VCF</span> - Uses thermal expansion coefficients for crude oil, fuels, and lubricating oils.</li>
           <li>Units: Mass (kg), Density (kg/l), Temperature (°C).</li>
         </ul>
       </div>
@@ -147,7 +147,7 @@ function renderRussian() {
     <div class="card">
       <div class="about-section">
         <h3>Описание</h3>
-        <p>OilCalcApp — это профессиональный инструмент для сюрвейеров и специалистов по логистике, предназначенный для точного пересчета массы и объема нефтепродуктов, а также анализа расхождений (потерь) при транспортировке.</p>
+        <p>OilCalcApp - это профессиональный инструмент для сюрвейеров и специалистов по логистике, предназначенный для точного пересчета массы и объема нефтепродуктов, а также анализа расхождений (потерь) при транспортировке.</p>
       </div>
     </div>
 
@@ -181,10 +181,10 @@ function renderRussian() {
         <h3>Используемые стандарты</h3>
         <p style="margin-bottom: var(--spacing-sm);">Приложение использует алгоритмы, соответствующие международным стандартам для расчетов нефти и нефтепродуктов:</p>
         <ul>
-          <li><span class="about-standard">ASTM D1250-04 / API MPMS Chapter 11.1</span> — Стандартные таблицы коррекции объемов.</li>
-          <li><span class="about-standard">Table 54A / 54B</span> — Для коррекции объема к 15°C (Generalized Crude Oils & Products).</li>
-          <li><span class="about-standard">Table 60A / 60B</span> — Для пересчета плотности.</li>
-          <li><span class="about-standard">VCF</span> — Коэффициенты теплового расширения для сырой нефти, топлив и смазочных масел.</li>
+          <li><span class="about-standard">ASTM D1250-04 / API MPMS Chapter 11.1</span> - Стандартные таблицы коррекции объемов.</li>
+          <li><span class="about-standard">Table 54A / 54B</span> - Для коррекции объема к 15°C (Generalized Crude Oils & Products).</li>
+          <li><span class="about-standard">Table 60A / 60B</span> - Для пересчета плотности.</li>
+          <li><span class="about-standard">VCF</span> - Коэффициенты теплового расширения для сырой нефти, топлив и смазочных масел.</li>
           <li>Единицы измерения: Масса (kg), Плотность (kg/l), Температура (°C).</li>
         </ul>
       </div>

@@ -3,7 +3,7 @@
    Translucent glass surfaces, refractive highlights, adaptive blur
    ═════════════════════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+/* No external fonts needed - using Century Gothic (system font) */
 
 /* ── CSS Variables ─────────────────────────────────────────── */
 :root {
@@ -63,7 +63,7 @@
   --spacing-xl: 32px;
 
   /* Fonts */
-  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  --font-family: 'Century Gothic', CenturyGothic, AppleGothic, -apple-system, BlinkMacSystemFont, sans-serif;
   --font-xs: 0.75rem;
   --font-sm: 0.85rem;
   --font-md: 1rem;

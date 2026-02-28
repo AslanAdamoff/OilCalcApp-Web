@@ -133,7 +133,7 @@ function showEntryDetail(entry) {
 
 function showTripHistoryResult(tripResult) {
     const { formatMass, formatVolume, formatDensity, formatTemperature, formatPercent } =
-        { formatMass, formatVolume, formatDensity: (v) => v?.toFixed(3) ?? '—', formatTemperature: (v) => v?.toFixed(1) ?? '—', formatPercent };
+        { formatMass, formatVolume, formatDensity: (v) => v?.toFixed(3) ?? '-', formatTemperature: (v) => v?.toFixed(1) ?? '-', formatPercent };
 
     let html = '<div class="result-card">';
     const d = tripResult.totalDelta || {};
