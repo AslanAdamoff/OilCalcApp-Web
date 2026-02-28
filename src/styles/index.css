@@ -185,10 +185,19 @@ body {
 
 .page {
   padding: var(--spacing-lg) var(--spacing-md);
-  padding-top: calc(env(safe-area-inset-top, 0px) + var(--spacing-lg));
+  /* Fallback for browsers that don't support env() */
+  padding-top: 48px;
+  /* Modern: safe area + spacing, minimum 48px */
+  padding-top: max(env(safe-area-inset-top, 20px) + 16px, 48px);
   padding-bottom: var(--spacing-xl);
   min-height: 100%;
   animation: pageFadeIn 0.3s ease;
+}
+
+@supports (padding-top: env(safe-area-inset-top)) {
+  .page {
+    padding-top: calc(env(safe-area-inset-top, 20px) + 16px);
+  }
 }
 
 @keyframes pageFadeIn {

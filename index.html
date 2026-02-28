@@ -10,7 +10,9 @@
   <meta name="theme-color" content="#0a0e1a">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="OilCalcApp">
   <link rel="apple-touch-icon" href="/icon-512.png">
+  <link rel="manifest" href="/manifest.json">
   <title>OilCalcApp — Petroleum Calculator</title>
   <link rel="icon" type="image/png" href="/icon-512.png">
   <style>
@@ -34,28 +36,10 @@
     }
 
     #splash img {
-      width: 160px;
-      max-width: 40vw;
+      width: 260px;
+      max-width: 65vw;
       height: auto;
-      border-radius: 32px;
       animation: splashPulse 2s ease-in-out infinite;
-    }
-
-    #splash .splash-title {
-      margin-top: 24px;
-      font-family: 'Inter', -apple-system, sans-serif;
-      font-size: 22px;
-      font-weight: 700;
-      color: #ffffff;
-      letter-spacing: 0.5px;
-    }
-
-    #splash .splash-sub {
-      margin-top: 6px;
-      font-family: 'Inter', -apple-system, sans-serif;
-      font-size: 13px;
-      color: rgba(255, 255, 255, 0.4);
-      letter-spacing: 1px;
     }
 
     @keyframes splashPulse {
@@ -77,9 +61,7 @@
 <body>
   <!-- Splash Screen -->
   <div id="splash">
-    <img src="/icon-512.png" alt="OilCalcApp">
-    <div class="splash-title">OilCalcApp</div>
-    <div class="splash-sub">PETROLEUM CALCULATOR</div>
+    <img src="/launch_image.png" alt="OilCalcApp">
   </div>
 
   <div id="app"></div>
