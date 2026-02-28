@@ -952,13 +952,14 @@ body {
 }
 
 .about-standard {
-  font-family: 'Courier New', monospace;
-  color: var(--text-secondary);
+  font-family: var(--font-family);
+  color: var(--text-primary);
   font-size: var(--font-xs);
-  background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: var(--blur-sm);
-  padding: 2px 6px;
-  border-radius: 4px;
+  font-weight: 600;
+  background: var(--glass);
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--glass-border);
 }
 
 /* ── Toolbar / Header Actions ──────────────────────────────── */
