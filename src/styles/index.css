@@ -146,13 +146,11 @@ body {
 #app {
   display: flex;
   flex-direction: column;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  height: var(--app-height, 100vh);
+  width: 100%;
   max-width: 480px;
   margin: 0 auto;
+  position: relative;
   overflow: hidden;
 }
 
@@ -168,10 +166,8 @@ body {
   padding: var(--spacing-xs) 0;
   padding-bottom: env(safe-area-inset-bottom, 0px);
   z-index: 100;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  flex-shrink: 0;
+  width: 100%;
 }
 
 .tab-btn {
@@ -227,8 +223,6 @@ body {
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
-  padding-bottom: 70px;
-  /* Space for fixed tab bar */
 }
 
 .page-container::-webkit-scrollbar {

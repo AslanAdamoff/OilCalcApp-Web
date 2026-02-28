@@ -33,20 +33,35 @@ const tabs = [
 
 let currentTab = 'calculator';
 
+/**
+ * iOS Safari viewport height fix.
+ * On iPhone Safari, CSS 100vh includes the area behind the toolbar,
+ * making the actual visible area shorter. This uses window.innerHeight
+ * which gives the TRUE visible viewport height.
+ */
+function setAppHeight() {
+    const vh = window.innerHeight;
+    document.documentElement.style.setProperty('--app-height', `${vh}px`);
+}
+
 function init() {
+    // Set real viewport height immediately and on every resize/orientation change
+    setAppHeight();
+    window.addEventListener('resize', setAppHeight);
+    window.addEventListener('orientationchange', () => {
+        setTimeout(setAppHeight, 100);
+    });
+
+    // Also listen to visualViewport resize for iOS Safari toolbar show/hide
+    if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', setAppHeight);
+    }
+
     const app = document.getElementById('app');
     app.innerHTML = `
     <div class="page-container" id="pageContainer"></div>
+    <nav class="tab-bar" id="tabBar"></nav>
   `;
-
-    // Tab bar outside #app, directly on body for reliable bottom positioning
-    let tabBar = document.getElementById('tabBar');
-    if (!tabBar) {
-        tabBar = document.createElement('nav');
-        tabBar.className = 'tab-bar';
-        tabBar.id = 'tabBar';
-        document.body.appendChild(tabBar);
-    }
 
     renderTabBar();
     switchTab(currentTab);
