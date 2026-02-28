@@ -3,7 +3,7 @@
  */
 
 import { HistoryService } from '../services/history-service.js';
-import { formatMass, formatVolume } from '../domain/formatters.js';
+import { formatMass, formatVolume, formatPercent } from '../domain/formatters.js';
 import { showConfirm, showResultModal } from './shared.js';
 import { CalculationType } from '../domain/models.js';
 
@@ -102,39 +102,51 @@ function renderItems(container, history) {
 
 function showEntryDetail(entry) {
     if (entry.tripResult) {
-        // Reuse trip result display
-        import('./trip-page.js').then(() => {
-            // Show a simplified version
-            showTripHistoryResult(entry.tripResult);
-        });
+        showTripHistoryResult(entry.tripResult);
     } else if (entry.dualResult) {
         const r = entry.dualResult;
+        const isDirect = entry.parameters?.mode === 'massToLiters';
         let rows = '';
 
-        if (entry.parameters?.mode === 'massToLiters') {
-            rows += `<div class="result-row"><span class="label">Mode</span><span class="value">Mass → Liters</span></div>`;
-        } else {
-            rows += `<div class="result-row"><span class="label">Mode</span><span class="value">Liters → Mass</span></div>`;
-        }
+        // Mode
+        rows += `<div class="result-row"><span class="label">Mode</span><span class="value">${isDirect ? 'Mass → Liters' : 'Liters → Mass'}</span></div>`;
+        rows += '<hr class="result-divider">';
 
+        // Input data
+        if (entry.parameters?.input) {
+            const inputLabel = isDirect ? 'Mass (input)' : 'Volume (input)';
+            const inputUnit = isDirect ? ' kg' : ' l';
+            rows += `<div class="result-row"><span class="label">${inputLabel}</span><span class="value">${entry.parameters.input}${inputUnit}</span></div>`;
+        }
         if (entry.parameters?.density) {
-            rows += `<div class="result-row"><span class="label">Density</span><span class="value">${entry.parameters.density}</span></div>`;
+            rows += `<div class="result-row"><span class="label">Density</span><span class="value">${entry.parameters.density} kg/l</span></div>`;
         }
         if (entry.parameters?.temperature) {
             rows += `<div class="result-row"><span class="label">Temperature</span><span class="value">${entry.parameters.temperature}°C</span></div>`;
         }
+        if (entry.parameters?.productType) {
+            rows += `<div class="result-row"><span class="label">Product</span><span class="value">${entry.parameters.productType === 'crudeOil' ? 'Crude Oil' : 'Refined'}</span></div>`;
+        }
+        if (entry.parameters?.densityMode) {
+            rows += `<div class="result-row"><span class="label">Density Mode</span><span class="value">${entry.parameters.densityMode === 'd15' ? 'At 15°C' : 'At T°C'}</span></div>`;
+        }
+
         rows += '<hr class="result-divider">';
-        rows += `<div class="result-row"><span class="label">At 15°C</span><span class="value accent">${formatVolume(r.at15)} l</span></div>`;
-        rows += `<div class="result-row"><span class="label">At T</span><span class="value accent">${formatVolume(r.atT)} l</span></div>`;
+
+        // Results
+        if (isDirect) {
+            rows += `<div class="result-row"><span class="label">Volume at 15°C</span><span class="value accent">${formatVolume(r.at15)} l</span></div>`;
+            rows += `<div class="result-row"><span class="label">Volume at T°C</span><span class="value accent">${formatVolume(r.atT)} l</span></div>`;
+        } else {
+            rows += `<div class="result-row"><span class="label">Mass at 15°C</span><span class="value accent">${formatMass(r.at15)} kg</span></div>`;
+            rows += `<div class="result-row"><span class="label">Mass at T°C</span><span class="value accent">${formatMass(r.atT)} kg</span></div>`;
+        }
 
         showResultModal('Calculator Result', `<div class="result-card">${rows}</div>`);
     }
 }
 
 function showTripHistoryResult(tripResult) {
-    const { formatMass, formatVolume, formatDensity, formatTemperature, formatPercent } =
-        { formatMass, formatVolume, formatDensity: (v) => v?.toFixed(3) ?? '-', formatTemperature: (v) => v?.toFixed(1) ?? '-', formatPercent };
-
     let html = '<div class="result-card">';
     const d = tripResult.totalDelta || {};
     const mc = (d.massKg ?? 0) >= 0 ? 'positive' : 'negative';
