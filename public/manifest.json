@@ -4,8 +4,9 @@
     "description": "Professional Calculator for Oil & Petroleum Products",
     "start_url": "/",
     "display": "standalone",
-    "background_color": "#050810",
-    "theme_color": "#0a0e1a",
+    "orientation": "portrait",
+    "background_color": "#0c1024",
+    "theme_color": "#0c1024",
     "icons": [
         {
             "src": "/icon-512.png",
