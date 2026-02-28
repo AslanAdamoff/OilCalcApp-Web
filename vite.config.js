@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-    base: '/OilCalcApp-Web/',
+    base: '/',
     root: '.',
     build: {
         outDir: 'dist',
