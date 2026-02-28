@@ -9,6 +9,7 @@ import { DensityMode, ProductType, CalculationType, createTripPoint, createTripT
 import { HistoryService } from '../services/history-service.js';
 import { TemplateService } from '../services/template-service.js';
 import { showError, showResultModal, showConfirm, showPrompt } from './shared.js';
+import { fieldIcons, actionIcons } from '../shared/icons.js';
 
 let state = {
     points: [],
@@ -33,7 +34,7 @@ export function renderTripPage() {
     <div class="page-header">
       <h1 class="page-title">Trip Loss</h1>
       <div class="dropdown-wrapper">
-        <button class="btn-icon" id="tripMenuBtn">☰</button>
+        <button class="btn-icon" id="tripMenuBtn">${actionIcons.menu}</button>
         <div class="dropdown-menu" id="tripMenu" style="display:none;"></div>
       </div>
     </div>
@@ -93,7 +94,7 @@ function renderPoints(container) {
         card.innerHTML = `
       <div class="trip-point-header">
         <input type="text" class="trip-point-name" placeholder="Location Name" value="${point.name}" data-field="name">
-        ${state.points.length > 2 ? `<button class="btn-danger" data-action="delete" title="Delete">🗑️</button>` : ''}
+        ${state.points.length > 2 ? `<button class="btn-danger" data-action="delete" title="Delete">${actionIcons.trash}</button>` : ''}
       </div>
       <div class="segmented" style="margin-bottom: var(--spacing-xs);">
         <input type="radio" name="dm_${point.id}" id="dm15_${point.id}" value="at15" ${point.densityMode === 'at15' ? 'checked' : ''}>
@@ -102,15 +103,15 @@ function renderPoints(container) {
         <label for="dmT_${point.id}">Density at T°C</label>
       </div>
       <div class="field-group" style="margin-top: var(--spacing-xs);">
-        <div class="field-label"><span class="field-icon">⚖️</span> Mass (kg)</div>
+        <div class="field-label"><span class="field-icon">${fieldIcons.mass}</span> Mass (kg)</div>
         <input type="text" inputmode="decimal" class="field-input" placeholder="1000.0" value="${point.mass}" data-field="mass">
       </div>
       <div class="field-group" style="margin-top: var(--spacing-xs);">
-        <div class="field-label"><span class="field-icon">⚗️</span> Density (kg/l)</div>
+        <div class="field-label"><span class="field-icon">${fieldIcons.density}</span> Density (kg/l)</div>
         <input type="text" inputmode="decimal" class="field-input" placeholder="0.850" value="${point.density}" data-field="density">
       </div>
       <div class="field-group" style="margin-top: var(--spacing-xs);">
-        <div class="field-label"><span class="field-icon">🌡️</span> Temperature (°C)</div>
+        <div class="field-label"><span class="field-icon">${fieldIcons.temperature}</span> Temperature (°C)</div>
         <input type="text" inputmode="decimal" class="field-input" placeholder="15.0" value="${point.temperature}" data-field="temperature">
       </div>
     `;
@@ -164,22 +165,22 @@ function setupMenu(page) {
         }
         const templates = TemplateService.loadTemplates();
         let items = `
-      <button class="dropdown-item" data-action="save-template">💾 Save Template</button>
+      <button class="dropdown-item" data-action="save-template">${actionIcons.save} Save Template</button>
     `;
 
         if (templates.length > 0) {
             items += '<hr class="dropdown-divider">';
             templates.forEach(t => {
-                items += `<button class="dropdown-item" data-action="load-template" data-id="${t.id}">📂 ${t.name}</button>`;
+                items += `<button class="dropdown-item" data-action="load-template" data-id="${t.id}">${actionIcons.folder} ${t.name}</button>`;
             });
             items += '<hr class="dropdown-divider">';
             templates.forEach(t => {
-                items += `<button class="dropdown-item danger" data-action="delete-template" data-id="${t.id}">🗑️ Delete "${t.name}"</button>`;
+                items += `<button class="dropdown-item danger" data-action="delete-template" data-id="${t.id}">${actionIcons.trash} Delete "${t.name}"</button>`;
             });
         }
 
         items += '<hr class="dropdown-divider">';
-        items += `<button class="dropdown-item danger" data-action="reset">🔄 Reset All</button>`;
+        items += `<button class="dropdown-item danger" data-action="reset">${actionIcons.reset} Reset All</button>`;
 
         menu.innerHTML = items;
         menu.style.display = 'block';

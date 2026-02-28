@@ -36,7 +36,7 @@ export function renderAboutPage() {
       <div class="card" style="padding: 16px;">
         <div style="display: flex; align-items: center; justify-content: space-between;">
           <div style="display: flex; align-items: center; gap: 10px;">
-            <span style="font-size: 1.3em;">${currentTheme === 'dark' ? '🌙' : '☀️'}</span>
+            <span style="font-size: 1.1em; opacity: 0.7;">${currentTheme === 'dark' ? '◐' : '○'}</span>
             <span style="font-weight: 600; color: var(--text-primary);">${lang === 'en' ? 'Theme' : 'Тема'}</span>
           </div>
           <div class="segmented" style="max-width: 200px;">
@@ -52,7 +52,7 @@ export function renderAboutPage() {
       <div class="card" style="padding: 16px;">
         <div style="display: flex; align-items: center; justify-content: space-between;">
           <div style="display: flex; align-items: center; gap: 10px;">
-            <span style="font-size: 1.3em;">🌐</span>
+            <span style="font-size: 1.1em; opacity: 0.7;">⌐</span>
             <span style="font-weight: 600; color: var(--text-primary);">${lang === 'en' ? 'Language' : 'Язык'}</span>
           </div>
           <div class="segmented" style="max-width: 200px;">
