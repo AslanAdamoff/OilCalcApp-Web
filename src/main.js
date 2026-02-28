@@ -4,6 +4,13 @@
  */
 
 import './styles/index.css';
+
+// Apply saved theme immediately
+const savedTheme = localStorage.getItem('oilcalc-theme');
+if (savedTheme === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+}
+
 import { renderCalculatorPage } from './pages/calculator-page.js';
 import { renderTripPage } from './pages/trip-page.js';
 import { renderHistoryPage } from './pages/history-page.js';

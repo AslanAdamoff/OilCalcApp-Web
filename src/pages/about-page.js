@@ -1,25 +1,66 @@
 /**
  * About Page — Port of AboutView.swift + SettingsView.swift
  * Bilingual EN/RU content about the app and standards
+ * Includes theme toggle (dark/light)
  */
 
 export function renderAboutPage() {
-    const page = document.createElement('div');
-    page.className = 'page';
+  const page = document.createElement('div');
+  page.className = 'page';
 
-    let lang = 'en';
+  let lang = 'en';
 
-    function render() {
-        page.innerHTML = `
+  function getCurrentTheme() {
+    return document.documentElement.getAttribute('data-theme') || 'dark';
+  }
+
+  function toggleTheme(theme) {
+    if (theme === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+    localStorage.setItem('oilcalc-theme', theme);
+  }
+
+  // Apply saved theme on load
+  const savedTheme = localStorage.getItem('oilcalc-theme') || 'dark';
+  toggleTheme(savedTheme);
+
+  function render() {
+    const currentTheme = getCurrentTheme();
+    page.innerHTML = `
       <h1 class="page-title">${lang === 'en' ? 'About' : 'О приложении'}</h1>
 
+      <!-- Theme Switcher -->
+      <div class="card" style="padding: 16px;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 1.3em;">${currentTheme === 'dark' ? '🌙' : '☀️'}</span>
+            <span style="font-weight: 600; color: var(--text-primary);">${lang === 'en' ? 'Theme' : 'Тема'}</span>
+          </div>
+          <div class="segmented" style="max-width: 200px;">
+            <input type="radio" name="themeToggle" id="themeDark" value="dark" ${currentTheme === 'dark' ? 'checked' : ''}>
+            <label for="themeDark">${lang === 'en' ? 'Dark' : 'Тёмная'}</label>
+            <input type="radio" name="themeToggle" id="themeLight" value="light" ${currentTheme === 'light' ? 'checked' : ''}>
+            <label for="themeLight">${lang === 'en' ? 'Light' : 'Светлая'}</label>
+          </div>
+        </div>
+      </div>
+
       <!-- Language Switcher -->
-      <div class="card" style="padding: 10px;">
-        <div class="segmented">
-          <input type="radio" name="aboutLang" id="langEn" value="en" ${lang === 'en' ? 'checked' : ''}>
-          <label for="langEn">English</label>
-          <input type="radio" name="aboutLang" id="langRu" value="ru" ${lang === 'ru' ? 'checked' : ''}>
-          <label for="langRu">Русский</label>
+      <div class="card" style="padding: 16px;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 1.3em;">🌐</span>
+            <span style="font-weight: 600; color: var(--text-primary);">${lang === 'en' ? 'Language' : 'Язык'}</span>
+          </div>
+          <div class="segmented" style="max-width: 200px;">
+            <input type="radio" name="aboutLang" id="langEn" value="en" ${lang === 'en' ? 'checked' : ''}>
+            <label for="langEn">English</label>
+            <input type="radio" name="aboutLang" id="langRu" value="ru" ${lang === 'ru' ? 'checked' : ''}>
+            <label for="langRu">Русский</label>
+          </div>
         </div>
       </div>
 
@@ -32,20 +73,27 @@ export function renderAboutPage() {
       </div>
     `;
 
-        page.querySelectorAll('input[name="aboutLang"]').forEach(r => {
-            r.addEventListener('change', (e) => {
-                lang = e.target.value;
-                render();
-            });
-        });
-    }
+    page.querySelectorAll('input[name="aboutLang"]').forEach(r => {
+      r.addEventListener('change', (e) => {
+        lang = e.target.value;
+        render();
+      });
+    });
 
-    render();
-    return page;
+    page.querySelectorAll('input[name="themeToggle"]').forEach(r => {
+      r.addEventListener('change', (e) => {
+        toggleTheme(e.target.value);
+        render();
+      });
+    });
+  }
+
+  render();
+  return page;
 }
 
 function renderEnglish() {
-    return `
+  return `
     <div class="card">
       <div class="about-section">
         <h3>Description</h3>
@@ -95,7 +143,7 @@ function renderEnglish() {
 }
 
 function renderRussian() {
-    return `
+  return `
     <div class="card">
       <div class="about-section">
         <h3>Описание</h3>
