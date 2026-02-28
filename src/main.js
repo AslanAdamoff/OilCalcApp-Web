@@ -38,24 +38,55 @@ let currentTab = 'calculator';
  * On iPhone Safari, CSS 100vh includes the area behind the toolbar,
  * making the actual visible area shorter. This uses window.innerHeight
  * which gives the TRUE visible viewport height.
+ * We skip updates when the keyboard is open to prevent the tab bar jump.
  */
+let initialHeight = 0;
+let keyboardOpen = false;
+
 function setAppHeight() {
+    if (keyboardOpen) return; // Don't resize while keyboard is open
     const vh = window.innerHeight;
+    if (!initialHeight) initialHeight = vh;
     document.documentElement.style.setProperty('--app-height', `${vh}px`);
 }
 
 function init() {
     // Set real viewport height immediately and on every resize/orientation change
     setAppHeight();
-    window.addEventListener('resize', setAppHeight);
+    window.addEventListener('resize', () => {
+        if (!keyboardOpen) setAppHeight();
+    });
     window.addEventListener('orientationchange', () => {
         setTimeout(setAppHeight, 100);
     });
 
     // Also listen to visualViewport resize for iOS Safari toolbar show/hide
     if (window.visualViewport) {
-        window.visualViewport.addEventListener('resize', setAppHeight);
+        window.visualViewport.addEventListener('resize', () => {
+            if (!keyboardOpen) setAppHeight();
+        });
     }
+
+    // Hide tab bar when keyboard opens (input focus)
+    document.addEventListener('focusin', (e) => {
+        const tag = e.target.tagName;
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') {
+            keyboardOpen = true;
+            const tabBar = document.getElementById('tabBar');
+            if (tabBar) tabBar.style.display = 'none';
+        }
+    });
+
+    document.addEventListener('focusout', (e) => {
+        const tag = e.target.tagName;
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') {
+            keyboardOpen = false;
+            const tabBar = document.getElementById('tabBar');
+            if (tabBar) tabBar.style.display = '';
+            // Restore correct height after keyboard closes
+            setTimeout(setAppHeight, 300);
+        }
+    });
 
     const app = document.getElementById('app');
     app.innerHTML = `
